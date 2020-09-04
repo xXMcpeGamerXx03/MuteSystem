@@ -4,3 +4,6 @@ Download: https://poggit.pmmp.io/ci/xXMcpeGamerXx03/MuteSystem/MuteSystem/1
 
 Bei Fehlern in Plugins schreibt mich auf Discord an!
 reptis⚡🔥#1250
+
+Dieses Plugin ist auf Deutsch und nur per Code Konfigurierbar und die Mutezeit ist auf Deutsch!
+This plugin is in German and can only be configured by code and the mute time is in German!

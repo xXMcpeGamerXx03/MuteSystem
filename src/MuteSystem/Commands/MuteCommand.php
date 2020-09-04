@@ -60,7 +60,30 @@ class MuteCommand extends Command {
                                                 }
                                             }
                                         } else {
-                                            API::mutePlayer($p, $sender, $args[2], $args[1]);
+                                            $cfg = new Config("plugin_data/MuteSystem/mutes.yml");
+                                            $cfg->setNested($p->getName() . ".Grund", $args[1]);
+                                            $cfg->setNested($p->getName() . ".Bis", date("Y-m-d H:i:s"));
+                                            $cfg->setNested($p->getName() . ".Muter", $sender->getName());
+                                            $cfg->save();
+                                            $date = new \DateTime("+" . $args[2] . " Hour");
+                                            $date->setTimezone(new \DateTimeZone("Europe/Berlin"));
+                                            $cfg->setNested($p->getName() . ".Bis", $date->format("Y-m-d H:i:s"));
+                                            $cfg->save();
+                                            $cfg->reload();
+                                            $p->sendMessage(MuteSystem::getPrefix() . "§7Du wurdest von §e" . $sender->getName() . " §c§lgemutet§r§7!");
+                                            $sender->sendMessage(MuteSystem::getPrefix() . "§e" . $p->getName() . " §7wurde erfolgreich §a§lgemutet§r§7!");
+                                            foreach (MuteSystem::getInstance()->getServer()->getOnlinePlayers() as $op) {
+                                                if ($op->hasPermission("mutes.see")) {
+                                                    $op->sendMessage(MuteSystem::getPrefix() . "§aNeuer §c§lMute§r§a!");
+                                                    $op->sendMessage("");
+                                                    $op->sendMessage(MuteSystem::getPrefix() . "§aSpieler §8► §c§l" . $p->getName());
+                                                    $op->sendMessage(MuteSystem::getPrefix() . "§aMuter §8► §c§l" . $sender->getName());
+                                                    $op->sendMessage(MuteSystem::getPrefix() . "§aGrund §8► §c§l" . $args[1]);
+                                                    $op->sendMessage(MuteSystem::getPrefix() . "§aBis §8► §c§l" . $cfg->getNested($p->getName() . ".Bis"));
+                                                } else {
+                                                    return true;
+                                                }
+                                            }
                                         }
                                     }
                                 }
